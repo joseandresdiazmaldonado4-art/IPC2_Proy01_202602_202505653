@@ -1,4 +1,4 @@
-using IPC2.Proyecto1.Estructuras;
+using IPC2.Proyecto1.Carga;
 using IPC2.Proyecto1.Modelos;
 
 namespace IPC2.Proyecto1;
@@ -7,28 +7,78 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("=== Prueba de la Sesión 1 ===");
+        DatosSistema datos = new DatosSistema();
+        LectorXml lector = new LectorXml();
 
-        Ciudad ciudad = new Ciudad("Ciudad de prueba", 3, 4);
-        ciudad.Mapa.ColocarCelda(new Celda(0, 0, TipoCelda.Entrada));
-        ciudad.Mapa.ColocarCelda(new Celda(1, 1, TipoCelda.Intransitable));
-        ciudad.Mapa.ColocarCelda(new Celda(2, 3, TipoCelda.Recurso));
-
-        ListaSimple<Robot> robots = new ListaSimple<Robot>();
-        robots.AgregarFinal(new ChapinRescue("Rescate 1"));
-        robots.AgregarFinal(new ChapinFighter("Peleador 1", 25));
-
-        Console.WriteLine($"Ciudad: {ciudad.Nombre}");
-        Console.WriteLine($"Tamaño: {ciudad.Mapa.TotalFilas} x {ciudad.Mapa.TotalColumnas}");
-        Console.WriteLine($"Celda [0,0]: {ciudad.Mapa.ObtenerCelda(0, 0).ObtenerSimbolo()}");
-        Console.WriteLine($"Celda [1,1]: {ciudad.Mapa.ObtenerCelda(1, 1).ObtenerSimbolo()}");
-        Console.WriteLine($"Celda [2,3]: {ciudad.Mapa.ObtenerCelda(2, 3).ObtenerSimbolo()}");
-        Console.WriteLine($"Robots guardados: {robots.Cantidad}");
-
-        for (int i = 0; i < robots.Cantidad; i++)
+        if (args.Length == 0)
         {
-            Robot robot = robots.Obtener(i);
-            Console.WriteLine($"- {robot.Nombre}: {robot.ObtenerTipo()}");
+            lector.Cargar("datos_prueba.xml", datos);
+            lector.Cargar("datos_actualizacion.xml", datos);
+        }
+        else
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                lector.Cargar(args[i], datos);
+            }
+        }
+
+        MostrarDatos(datos);
+    }
+
+    private static void MostrarDatos(DatosSistema datos)
+    {
+        Console.WriteLine($"Ciudades: {datos.Ciudades.Cantidad}");
+
+        for (int i = 0; i < datos.Ciudades.Cantidad; i++)
+        {
+            Ciudad ciudad = datos.Ciudades.Obtener(i);
+            Console.WriteLine($"{ciudad.Nombre}: {ciudad.Mapa.TotalFilas} x {ciudad.Mapa.TotalColumnas}");
+
+            for (int fila = 0; fila < ciudad.Mapa.TotalFilas; fila++)
+            {
+                for (int columna = 0; columna < ciudad.Mapa.TotalColumnas; columna++)
+                {
+                    Console.Write(ciudad.Mapa.ObtenerCelda(fila, columna).ObtenerSimbolo());
+                }
+
+                Console.WriteLine();
+            }
+
+            MostrarUnidades(ciudad);
+        }
+
+        Console.WriteLine($"Robots: {datos.Robots.Cantidad}");
+
+        for (int i = 0; i < datos.Robots.Cantidad; i++)
+        {
+            Robot robot = datos.Robots.Obtener(i);
+
+            if (robot is ChapinFighter fighter)
+            {
+                Console.WriteLine($"{fighter.Nombre}: {fighter.ObtenerTipo()}, capacidad {fighter.CapacidadCombate}");
+            }
+            else
+            {
+                Console.WriteLine($"{robot.Nombre}: {robot.ObtenerTipo()}");
+            }
+        }
+    }
+
+    private static void MostrarUnidades(Ciudad ciudad)
+    {
+        for (int fila = 0; fila < ciudad.Mapa.TotalFilas; fila++)
+        {
+            for (int columna = 0; columna < ciudad.Mapa.TotalColumnas; columna++)
+            {
+                Celda celda = ciudad.Mapa.ObtenerCelda(fila, columna);
+
+                if (celda.Tipo == TipoCelda.Militar)
+                {
+                    Console.WriteLine(
+                        $"Unidad militar [{fila + 1},{columna + 1}]: {celda.CapacidadMilitar}");
+                }
+            }
         }
     }
 }

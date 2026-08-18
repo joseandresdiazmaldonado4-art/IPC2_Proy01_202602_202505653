@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuracion>
+  <ciudades>
+    <ciudad>
+      <nombre>Guatemala</nombre>
+      <filas>3</filas>
+      <columnas>4</columnas>
+      <malla>
+        <fila>E  *</fila>
+        <fila> C R</fila>
+        <fila>****</fila>
+      </malla>
+      <unidadesMilitares>
+        <unidadMilitar>
+          <fila>1</fila>
+          <columna>2</columna>
+          <capacidad>20</capacidad>
+        </unidadMilitar>
+      </unidadesMilitares>
+    </ciudad>
+  </ciudades>
+  <robots>
+    <robot>
+      <nombre>Fighter Uno</nombre>
+      <tipo>ChapinFighter</tipo>
+      <capacidad>45</capacidad>
+    </robot>
+  </robots>
+</configuracion>

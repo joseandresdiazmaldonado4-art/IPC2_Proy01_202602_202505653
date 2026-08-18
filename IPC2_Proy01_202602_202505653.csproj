@@ -5,4 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <None Update="datos_prueba.xml" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="datos_actualizacion.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
