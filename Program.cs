@@ -1,4 +1,5 @@
 using IPC2.Proyecto1.Carga;
+using IPC2.Proyecto1.Misiones;
 using IPC2.Proyecto1.Modelos;
 
 namespace IPC2.Proyecto1;
@@ -24,6 +25,7 @@ public class Program
         }
 
         MostrarDatos(datos);
+        MostrarMisiones(datos);
     }
 
     private static void MostrarDatos(DatosSistema datos)
@@ -77,6 +79,39 @@ public class Program
                 {
                     Console.WriteLine(
                         $"Unidad militar [{fila + 1},{columna + 1}]: {celda.CapacidadMilitar}");
+                }
+            }
+        }
+    }
+
+    private static void MostrarMisiones(DatosSistema datos)
+    {
+        PlanificadorMisiones planificador = new PlanificadorMisiones();
+
+        for (int i = 0; i < datos.Ciudades.Cantidad; i++)
+        {
+            Ciudad ciudad = datos.Ciudades.Obtener(i);
+
+            for (int j = 0; j < datos.Robots.Cantidad; j++)
+            {
+                Robot robot = datos.Robots.Obtener(j);
+
+                if (robot is ChapinRescue rescate)
+                {
+                    ResultadoMision resultado = planificador.ResolverRescate(ciudad, rescate);
+                    Console.WriteLine($"Rescate con {rescate.Nombre}:");
+                    Console.WriteLine(resultado.ObtenerRutaComoTexto());
+                }
+                else if (robot is ChapinFighter fighter)
+                {
+                    ResultadoMision resultado = planificador.ResolverExtraccion(ciudad, fighter);
+                    Console.WriteLine($"Extracción con {fighter.Nombre}:");
+                    Console.WriteLine(resultado.ObtenerRutaComoTexto());
+
+                    if (resultado.Completada)
+                    {
+                        Console.WriteLine($"Capacidad restante: {resultado.CapacidadFinal}");
+                    }
                 }
             }
         }

@@ -8,5 +8,6 @@
   <ItemGroup>
     <None Update="datos_prueba.xml" CopyToOutputDirectory="PreserveNewest" />
     <None Update="datos_actualizacion.xml" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="datos_imposible.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
