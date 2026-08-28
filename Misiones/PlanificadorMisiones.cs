@@ -7,6 +7,24 @@ public class PlanificadorMisiones
 {
     public ResultadoMision ResolverRescate(Ciudad ciudad, ChapinRescue robot)
     {
+        return BuscarRescate(ciudad, null);
+    }
+
+    public ResultadoMision ResolverRescate(
+        Ciudad ciudad,
+        ChapinRescue robot,
+        Coordenada objetivo)
+    {
+        if (!EsObjetivoValido(ciudad, objetivo, TipoCelda.Civil))
+        {
+            return ResultadoMision.Imposible();
+        }
+
+        return BuscarRescate(ciudad, objetivo);
+    }
+
+    private ResultadoMision BuscarRescate(Ciudad ciudad, Coordenada? objetivo)
+    {
         Cola<EstadoBusqueda> pendientes = new Cola<EstadoBusqueda>();
         ListaSimple<Coordenada> visitadas = new ListaSimple<Coordenada>();
 
@@ -19,7 +37,8 @@ public class PlanificadorMisiones
                 actual.Posicion.Fila,
                 actual.Posicion.Columna);
 
-            if (celdaActual.Tipo == TipoCelda.Civil)
+            if (celdaActual.Tipo == TipoCelda.Civil
+                && CoincideObjetivo(actual.Posicion, objetivo))
             {
                 return CrearResultado(actual);
             }
@@ -35,6 +54,27 @@ public class PlanificadorMisiones
 
     public ResultadoMision ResolverExtraccion(Ciudad ciudad, ChapinFighter robot)
     {
+        return BuscarExtraccion(ciudad, robot, null);
+    }
+
+    public ResultadoMision ResolverExtraccion(
+        Ciudad ciudad,
+        ChapinFighter robot,
+        Coordenada objetivo)
+    {
+        if (!EsObjetivoValido(ciudad, objetivo, TipoCelda.Recurso))
+        {
+            return ResultadoMision.Imposible();
+        }
+
+        return BuscarExtraccion(ciudad, robot, objetivo);
+    }
+
+    private ResultadoMision BuscarExtraccion(
+        Ciudad ciudad,
+        ChapinFighter robot,
+        Coordenada? objetivo)
+    {
         Cola<EstadoBusqueda> pendientes = new Cola<EstadoBusqueda>();
         ListaSimple<RegistroCelda> mejoresLlegadas = new ListaSimple<RegistroCelda>();
 
@@ -47,7 +87,8 @@ public class PlanificadorMisiones
                 actual.Posicion.Fila,
                 actual.Posicion.Columna);
 
-            if (celdaActual.Tipo == TipoCelda.Recurso)
+            if (celdaActual.Tipo == TipoCelda.Recurso
+                && CoincideObjetivo(actual.Posicion, objetivo))
             {
                 robot.CapacidadCombate = actual.CapacidadRestante;
                 return CrearResultado(actual);
@@ -60,6 +101,21 @@ public class PlanificadorMisiones
         }
 
         return ResultadoMision.Imposible();
+    }
+
+    private bool CoincideObjetivo(Coordenada posicion, Coordenada? objetivo)
+    {
+        return objetivo == null
+            || posicion.Fila == objetivo.Fila && posicion.Columna == objetivo.Columna;
+    }
+
+    private bool EsObjetivoValido(
+        Ciudad ciudad,
+        Coordenada objetivo,
+        TipoCelda tipoEsperado)
+    {
+        return ExistePosicion(ciudad, objetivo.Fila, objetivo.Columna)
+            && ciudad.Mapa.ObtenerCelda(objetivo.Fila, objetivo.Columna).Tipo == tipoEsperado;
     }
 
     private void AgregarEntradasRescate(

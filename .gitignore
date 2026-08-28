@@ -3,4 +3,5 @@ obj/
 .vs/
 *.user
 *.suo
-reportes/
+reportes/*.dot
+reportes/*.png
