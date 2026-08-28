@@ -302,7 +302,12 @@ public class MenuPrincipal
         while (true)
         {
             Console.Write(mensaje);
-            string texto = Console.ReadLine() ?? "";
+            string? texto = Console.ReadLine();
+
+            if (texto == null)
+            {
+                return 0;
+            }
 
             if (int.TryParse(texto, out int numero)
                 && numero >= minimo
