@@ -22,7 +22,8 @@ public class GeneradorGrafico
         string rutaDot = Path.Combine(carpeta, nombre + ".dot");
         string rutaImagen = Path.Combine(carpeta, nombre + ".png");
 
-        File.WriteAllText(rutaDot, CrearDot(mision), Encoding.UTF8);
+        UTF8Encoding textoSinMarca = new UTF8Encoding(false);
+        File.WriteAllText(rutaDot, CrearDot(mision), textoSinMarca);
         EjecutarGraphviz(rutaDot, rutaImagen);
         return rutaImagen;
     }
@@ -126,7 +127,8 @@ public class GeneradorGrafico
 
         if (mision.Robot is ChapinFighter)
         {
-            resumen += $"{Environment.NewLine}Capacidad: {mision.CapacidadInicial} -> {mision.Resultado.CapacidadFinal}";
+            resumen += $"{Environment.NewLine}Capacidad de combate inicial: {mision.CapacidadInicial}";
+            resumen += $"{Environment.NewLine}Capacidad de combate final: {mision.Resultado.CapacidadFinal}";
         }
 
         resumen += $"{Environment.NewLine}Ruta: {mision.Resultado.ObtenerRutaComoTexto()}";

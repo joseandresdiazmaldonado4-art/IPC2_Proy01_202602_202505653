@@ -90,7 +90,6 @@ public class PlanificadorMisiones
             if (celdaActual.Tipo == TipoCelda.Recurso
                 && CoincideObjetivo(actual.Posicion, objetivo))
             {
-                robot.CapacidadCombate = actual.CapacidadRestante;
                 return CrearResultado(actual);
             }
 

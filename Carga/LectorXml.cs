@@ -45,6 +45,9 @@ public class LectorXml
         ListaSimple<UnidadMilitar> unidades = new ListaSimple<UnidadMilitar>();
 
         lector.Read();
+        nombre = lector.GetAttribute("nombre") ?? nombre;
+        int.TryParse(lector.GetAttribute("filas"), out totalFilas);
+        int.TryParse(lector.GetAttribute("columnas"), out totalColumnas);
 
         while (!lector.EOF)
         {
@@ -94,6 +97,9 @@ public class LectorXml
         int capacidad = 0;
 
         lector.Read();
+        int.TryParse(lector.GetAttribute("fila"), out fila);
+        int.TryParse(lector.GetAttribute("columna"), out columna);
+        int.TryParse(lector.GetAttribute("capacidad"), out capacidad);
 
         while (!lector.EOF)
         {
@@ -112,6 +118,11 @@ public class LectorXml
                 capacidad = lector.ReadElementContentAsInt();
                 continue;
             }
+            else if (lector.NodeType == XmlNodeType.Text
+                && int.TryParse(lector.Value.Trim(), out int capacidadLeida))
+            {
+                capacidad = capacidadLeida;
+            }
 
             lector.Read();
         }
@@ -126,6 +137,9 @@ public class LectorXml
         int capacidad = 0;
 
         lector.Read();
+        nombre = lector.GetAttribute("nombre") ?? nombre;
+        tipo = lector.GetAttribute("tipo") ?? tipo;
+        int.TryParse(lector.GetAttribute("capacidad"), out capacidad);
 
         while (!lector.EOF)
         {

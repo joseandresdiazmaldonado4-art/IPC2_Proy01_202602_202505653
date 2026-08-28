@@ -6,3 +6,4 @@ obj/
 reportes/*.dot
 reportes/*.png
 paquete_windows/
+paquete_grafico/

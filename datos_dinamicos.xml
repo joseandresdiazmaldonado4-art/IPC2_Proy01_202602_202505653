@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuracion>
+  <listaCiudades>
+    <ciudad nombre="Peten" filas="3" columnas="5">
+      <malla>
+        <fila>E C C</fila>
+        <fila>*   *</fila>
+        <fila>R   R</fila>
+      </malla>
+      <unidadesMilitares>
+        <unidadMilitar fila="2" columna="3">10</unidadMilitar>
+      </unidadesMilitares>
+    </ciudad>
+  </listaCiudades>
+  <robots>
+    <robot nombre="Rescate Dos" tipo="ChapinRescue" />
+    <robot nombre="Fighter Dos" tipo="ChapinFighter" capacidad="35" />
+  </robots>
+</configuracion>

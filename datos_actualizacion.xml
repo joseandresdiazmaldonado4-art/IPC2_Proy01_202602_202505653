@@ -21,6 +21,10 @@
   </ciudades>
   <robots>
     <robot>
+      <nombre>Rescate Uno</nombre>
+      <tipo>ChapinRescue</tipo>
+    </robot>
+    <robot>
       <nombre>Fighter Uno</nombre>
       <tipo>ChapinFighter</tipo>
       <capacidad>45</capacidad>
